@@ -11,7 +11,7 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
-[🌐 Live Demo](https://your-deployed-url.vercel.app) · [✨ Features](#-features) · [🚀 Quick Start](#-quick-start)
+[✨ Features](#-features) · [🚀 Quick Start](#-quick-start)
 
 </div>
 
@@ -323,7 +323,7 @@ This project is licensed under the **MIT License** — free to use, modify, and 
 
 <div align="center">
 
-**Built by [Your Name](https://github.com/<your-username>)**
+**Built by (https://github.com/Pravalika78)**
 
 ⭐ If this project helped you, consider giving it a star!
 
