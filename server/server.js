@@ -44,7 +44,11 @@ const OrderSchema = new mongoose.Schema(
     items: { type: [OrderItemSchema], required: true },
     total: { type: Number, required: true },
     method: { type: String, required: true },
-    placedAt: { type: String, default: () => new Date().toLocaleString() },
+    placedAt: {
+      type: String,
+      default: () =>
+        new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+    },
     status: { type: String, default: "Pending" },
   },
   { timestamps: true },
