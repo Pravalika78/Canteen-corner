@@ -5,7 +5,7 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
 const app = express();
 app.use(express.json({ limit: "10gb" }));
@@ -51,6 +51,7 @@ const OrderSchema = new mongoose.Schema(
 );
 
 const Order = mongoose.model("Order", OrderSchema);
+
 const UserSchema = new mongoose.Schema(
   {
     userId: { type: String, required: true, unique: true },
@@ -246,22 +247,10 @@ app.post("/api/auth/login", async (req, res) => {
     res.status(500).json({ error: "Login failed. Try again." });
   }
 });
-// EMAIL
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  family: 4,
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 15000,
-});
 
-// Forgot pass — gen token & send email
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Forgot password — generate token & send email
 app.post("/api/auth/forgot-password", async (req, res) => {
   try {
     const { userId, email } = req.body;
@@ -309,10 +298,10 @@ app.post("/api/auth/forgot-password", async (req, res) => {
       email: targetEmail,
     });
 
-    //mail sent in bg
-    transporter
-      .sendMail({
-        from: `"Canteen Corner" <${process.env.EMAIL_USER}>`,
+    // Send email in bg
+    resend.emails
+      .send({
+        from: "Canteen Corner <onboarding@resend.dev>",
         to: targetEmail,
         subject: "Reset your Canteen Corner password",
         html: `
@@ -340,7 +329,7 @@ app.post("/api/auth/forgot-password", async (req, res) => {
         `,
       })
       .catch((err) => {
-        console.error("Background email send error:", err);
+        console.error("Resend email error:", err);
       });
   } catch (err) {
     console.error("Forgot password error:", err);
