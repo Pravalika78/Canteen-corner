@@ -100,7 +100,9 @@ function App() {
   const [forgotLoading, setForgotLoading] = useState(false);
   const [adminForgotLoading, setAdminForgotLoading] = useState(false);
   const [forgotSuccessEmail, setForgotSuccessEmail] = useState("");
+  const [forgotRole, setForgotRole] = useState("user");
   const [resetToken, setResetToken] = useState("");
+  const [resetRole, setResetRole] = useState("user");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [showResetPassword, setShowResetPassword] = useState(false);
@@ -206,9 +208,11 @@ function App() {
     fetchItems();
     const params = new URLSearchParams(window.location.search);
     const urlToken = params.get("token");
+    const urlRole = params.get("role");
     if (urlToken && window.location.pathname === "/reset") {
       setResetToken(urlToken);
-      setRole("reset-password");
+      setResetRole(urlRole === "admin" ? "admin" : "user");
+      setRole(urlRole === "admin" ? "admin-reset-password" : "reset-password");
       return;
     }
 
@@ -318,6 +322,7 @@ function App() {
       setForgotSuccessEmail(data.email || forgotEmail.trim());
       setForgotUserId("");
       setForgotEmail("");
+      setForgotRole("user");
       setRole("forgot-success");
     } catch (err) {
       console.error(err);
@@ -430,7 +435,7 @@ function App() {
       }
       setForgotSuccessEmail(data.email || forgotAdminUserId.trim());
       setForgotAdminUserId("");
-      setRole("forgot-success");
+      setRole("admin-forgot-success");
     } catch (err) {
       console.error(err);
       alert("Could not connect to server");
@@ -475,7 +480,7 @@ function App() {
       setNewPassword("");
       setConfirmNewPassword("");
       window.history.replaceState({}, "", "/");
-      setRole("user-login");
+      setRole(urlRole === "admin" ? "admin-login" : "user-login");
     } catch (err) {
       console.error(err);
       alert("Could not connect to server");
@@ -1495,6 +1500,158 @@ function App() {
             >
               Back to Login
             </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // RESET PASSWORD SCREEN
+  if (role === "reset-password") {
+    return (
+      <div style={{ minHeight: "100vh" }}>
+        <Header />
+
+        <div
+          className="fade-in auth-page-wrapper"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "60px 24px",
+          }}
+        >
+          <div
+            className="card-shadow"
+            style={{
+              width: "100%",
+              maxWidth: "420px",
+              background: "#fff",
+              borderRadius: "20px",
+              padding: "40px 36px",
+            }}
+          >
+            <div
+              onClick={() => setRole("user-login")}
+              style={{
+                fontSize: "14px",
+                color: "#9a8a7d",
+                cursor: "pointer",
+                marginBottom: "24px",
+                display: "inline-block",
+              }}
+            >
+              ← Back to Login
+            </div>
+
+            <h2
+              style={{
+                margin: "0 0 8px",
+                fontSize: "28px",
+                fontWeight: 700,
+                color: "#e85d2f",
+              }}
+            >
+              Set New Password
+            </h2>
+            <p
+              style={{
+                margin: "0 0 32px",
+                fontSize: "14px",
+                color: "#9a8a7d",
+              }}
+            >
+              Enter your new password below.
+            </p>
+
+            <form
+              onSubmit={handleResetPassword}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "18px",
+              }}
+            >
+              <div>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: "#2d1a11",
+                  }}
+                >
+                  New Password
+                </label>
+                <PasswordField
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  showPassword={showResetPassword}
+                  toggleShowPassword={() => setShowResetPassword((s) => !s)}
+                />
+              </div>
+
+              <div>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: "#2d1a11",
+                  }}
+                >
+                  Confirm Password
+                </label>
+                <PasswordField
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  required
+                  showPassword={showResetPassword}
+                  toggleShowPassword={() => setShowResetPassword((s) => !s)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                style={{
+                  marginTop: "8px",
+                  padding: "13px",
+                  background:
+                    "linear-gradient(135deg, #e85d2f 0%, #d94a1c 100%)",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "10px",
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Reset Password
+              </button>
+            </form>
+
+            <div
+              style={{
+                marginTop: "24px",
+                fontSize: "13px",
+                textAlign: "center",
+                color: "#9a8a7d",
+              }}
+            >
+              Remembered your password?{" "}
+              <span
+                onClick={() => setRole("user-login")}
+                style={{
+                  color: "#e85d2f",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+              >
+                Log In
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -2815,6 +2972,239 @@ function App() {
                 }}
               >
                 {adminForgotLoading ? "Sending..." : "Send Reset Link"}
+              </button>
+            </form>
+
+            <div
+              style={{
+                marginTop: "24px",
+                fontSize: "13px",
+                textAlign: "center",
+                color: "#9a8a7d",
+              }}
+            >
+              Remembered your password?{" "}
+              <span
+                onClick={() => setRole("admin-login")}
+                style={{
+                  color: "#2d1a11",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+              >
+                Log In
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  // ADMIN FORGOT SUCCESS
+  if (role === "admin-forgot-success") {
+    return (
+      <div style={{ minHeight: "100vh" }}>
+        <Header />
+
+        <div
+          className="fade-in auth-page-wrapper"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "60px 24px",
+          }}
+        >
+          <div
+            className="card-shadow"
+            style={{
+              width: "100%",
+              maxWidth: "420px",
+              background: "#fff",
+              borderRadius: "20px",
+              padding: "40px 36px",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ fontSize: "60px", marginBottom: "16px" }}>📧</div>
+
+            <h2
+              style={{
+                margin: "0 0 12px",
+                color: "#2d1a11",
+                fontSize: "24px",
+                fontWeight: 700,
+              }}
+            >
+              Check Your Email
+            </h2>
+
+            <p
+              style={{
+                margin: "0 0 20px",
+                fontSize: "14px",
+                color: "#9a8a7d",
+                lineHeight: 1.6,
+              }}
+            >
+              We sent a password reset link to
+              <br />
+              <strong style={{ color: "#2d1a11" }}>{forgotSuccessEmail}</strong>
+            </p>
+
+            <p
+              style={{
+                margin: "0 0 24px",
+                fontSize: "13px",
+                color: "#9a8a7d",
+              }}
+            >
+              Didn't receive it? Check your spam folder.
+            </p>
+
+            <button
+              onClick={() => setRole("admin-login")}
+              style={{
+                padding: "12px 32px",
+                background: "linear-gradient(135deg, #3a3a3a 0%, #1a1a1a 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "10px",
+                cursor: "pointer",
+                fontSize: "15px",
+                fontWeight: 600,
+              }}
+            >
+              Back to Admin Login
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ADMIN RESET PASSWORD
+  if (role === "admin-reset-password") {
+    return (
+      <div style={{ minHeight: "100vh" }}>
+        <Header />
+
+        <div
+          className="fade-in auth-page-wrapper"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "60px 24px",
+          }}
+        >
+          <div
+            className="card-shadow"
+            style={{
+              width: "100%",
+              maxWidth: "420px",
+              background: "#fff",
+              borderRadius: "20px",
+              padding: "40px 36px",
+            }}
+          >
+            <div
+              onClick={() => setRole("admin-login")}
+              style={{
+                fontSize: "14px",
+                color: "#9a8a7d",
+                cursor: "pointer",
+                marginBottom: "24px",
+                display: "inline-block",
+              }}
+            >
+              ← Back to Admin Login
+            </div>
+
+            <h2
+              style={{
+                margin: "0 0 8px",
+                fontSize: "28px",
+                fontWeight: 700,
+                color: "#2d1a11",
+              }}
+            >
+              Set New Admin Password
+            </h2>
+            <p
+              style={{
+                margin: "0 0 32px",
+                fontSize: "14px",
+                color: "#9a8a7d",
+              }}
+            >
+              Enter your new admin password below.
+            </p>
+
+            <form
+              onSubmit={handleResetPassword}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "18px",
+              }}
+            >
+              <div>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: "#2d1a11",
+                  }}
+                >
+                  New Password
+                </label>
+                <PasswordField
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  showPassword={showResetPassword}
+                  toggleShowPassword={() => setShowResetPassword((s) => !s)}
+                />
+              </div>
+
+              <div>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: "#2d1a11",
+                  }}
+                >
+                  Confirm Password
+                </label>
+                <PasswordField
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  required
+                  showPassword={showResetPassword}
+                  toggleShowPassword={() => setShowResetPassword((s) => !s)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                style={{
+                  marginTop: "8px",
+                  padding: "13px",
+                  background:
+                    "linear-gradient(135deg, #3a3a3a 0%, #1a1a1a 100%)",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "10px",
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Reset Admin Password
               </button>
             </form>
 

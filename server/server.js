@@ -277,12 +277,10 @@ app.post("/api/auth/forgot-password", async (req, res) => {
       user.resetTokenExpiry &&
       user.resetTokenExpiry - Date.now() > 15 * 60 * 1000 - TWO_MINUTES
     ) {
-      return res
-        .status(429)
-        .json({
-          error:
-            "A reset link was already sent. Please check your inbox and spam folder.",
-        });
+      return res.status(429).json({
+        error:
+          "A reset link was already sent. Please check your inbox and spam folder.",
+      });
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
@@ -293,7 +291,7 @@ app.post("/api/auth/forgot-password", async (req, res) => {
     await user.save();
 
     const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
-    const resetLink = `${frontendUrl}/reset?token=${resetToken}`;
+    const resetLink = `${frontendUrl}/reset?token=${resetToken}&role=${user.role}`;
 
     res.json({
       message: `Reset link sent to ${targetEmail}. Check your inbox.`,
