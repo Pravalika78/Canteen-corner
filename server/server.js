@@ -277,10 +277,12 @@ app.post("/api/auth/forgot-password", async (req, res) => {
       user.resetTokenExpiry &&
       user.resetTokenExpiry - Date.now() > 15 * 60 * 1000 - TWO_MINUTES
     ) {
-      return res.status(429).json({
-        error:
-          "A reset link was already sent. Please check your inbox and spam folder.",
-      });
+      return res
+        .status(429)
+        .json({
+          error:
+            "A reset link was already sent. Please check your inbox and spam folder.",
+        });
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
@@ -298,35 +300,15 @@ app.post("/api/auth/forgot-password", async (req, res) => {
       email: targetEmail,
     });
 
-    // Send email in bg
     resend.emails
       .send({
         from: "Canteen Corner <onboarding@resend.dev>",
         to: targetEmail,
         subject: "Reset your Canteen Corner password",
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto;">
-            <h2 style="color: #e85d2f;">Canteen Corner</h2>
-            <p>You requested to reset the password for your account</p>
-            <p style="text-align: center; margin: 30px 0;">
-              <a href="${resetLink}"
-                 style="background: #e85d2f; color: #fff; padding: 12px 30px;
-                        text-decoration: none; border-radius: 6px; display: inline-block;">
-                Reset Password
-              </a>
-            </p>
-            <p style="color: #666; font-size: 13px;">
-              This link expires in <strong>15 minutes</strong>.
-            </p>
-            <p style="color: #666; font-size: 13px;">
-              If you didn't request this, you can ignore this email.
-            </p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
-            <p style="color: #999; font-size: 12px;">
-              Canteen Corner — Order. Collect. Enjoy
-            </p>
-          </div>
-        `,
+        html: `<div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto;"><h2 style="color: #e85d2f;">Canteen Corner</h2><p>You requested to reset the password for your account</p><p style="text-align: center; margin: 30px 0;"><a href="${resetLink}" style="background: #e85d2f; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 6px; display: inline-block;">Reset Password</a></p><p style="color: #666; font-size: 13px;">This link expires in <strong>15 minutes</strong>.</p><p style="color: #666; font-size: 13px;">If you didn't request this, you can ignore this email.</p><p style="color: #999; font-size: 12px;">Canteen Corner — Order. Collect. Enjoy</p></div>`,
+      })
+      .then((result) => {
+        console.log("Resend response:", JSON.stringify(result));
       })
       .catch((err) => {
         console.error("Resend email error:", err);
