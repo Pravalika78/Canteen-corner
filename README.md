@@ -216,6 +216,38 @@ The admin panel is protected by a secret code that **you set yourself**.
 
 ---
 
+## 📧 Email Setup Note
+
+This project uses **[Resend](https://resend.com)** for sending password-reset emails.
+
+### How Email Works
+
+- The backend uses Resend's REST API (over HTTPS) — **not SMTP**
+- Most free hosting platforms (Render, Railway, etc.) block outbound SMTP on port 465/587
+- Resend works on the free tier without needing a custom domain
+
+### Free Tier Limitation
+
+On Resend's **free tier** (without a verified custom domain), emails can **only be sent to the email address you signed up with**.
+
+**To send password-reset emails to any recipient, you must:**
+
+1. Buy a domain (~$10/year)
+2. Verify it at [resend.com/domains](https://resend.com/domains)
+3. Update the `from` address in `server.js` from `onboarding@resend.dev` to your domain
+
+**This is a normal limitation of the free tier — not a bug.**
+
+### Setup (for developers cloning this repo)
+
+1. Sign up at [resend.com](https://resend.com) — free
+2. Go to **API Keys** → **Create API Key**
+3. Copy the key (starts with `re_`)
+4. Add it to your `.env` file:
+5. Add it to your Render environment variables (for deployment)
+
+---
+
 ## 📁 Project Structure
 
 ```
