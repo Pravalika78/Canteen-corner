@@ -1419,6 +1419,87 @@ function App() {
       </div>
     );
   }
+  // FORGOT PASSWORD SUCCESS
+  if (role === "forgot-success") {
+    return (
+      <div style={{ minHeight: "100vh" }}>
+        <Header />
+
+        <div
+          className="fade-in auth-page-wrapper"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "60px 24px",
+          }}
+        >
+          <div
+            className="card-shadow"
+            style={{
+              width: "100%",
+              maxWidth: "420px",
+              background: "#fff",
+              borderRadius: "20px",
+              padding: "40px 36px",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ fontSize: "60px", marginBottom: "16px" }}>📧</div>
+
+            <h2
+              style={{
+                margin: "0 0 12px",
+                color: "#e85d2f",
+                fontSize: "24px",
+                fontWeight: 700,
+              }}
+            >
+              Check Your Email
+            </h2>
+
+            <p
+              style={{
+                margin: "0 0 20px",
+                fontSize: "14px",
+                color: "#9a8a7d",
+                lineHeight: 1.6,
+              }}
+            >
+              We sent a password reset link to
+              <br />
+              <strong style={{ color: "#2d1a11" }}>{forgotSuccessEmail}</strong>
+            </p>
+
+            <p
+              style={{
+                margin: "0 0 24px",
+                fontSize: "13px",
+                color: "#9a8a7d",
+              }}
+            >
+              Didn't receive it? Check your spam folder.
+            </p>
+
+            <button
+              onClick={() => setRole("user-login")}
+              style={{
+                padding: "12px 32px",
+                background: "linear-gradient(135deg, #e85d2f 0%, #d94a1c 100%)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "10px",
+                cursor: "pointer",
+                fontSize: "15px",
+                fontWeight: 600,
+              }}
+            >
+              Back to Login
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // USER SIGNUP
   if (role === "user-signup") {
