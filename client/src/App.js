@@ -503,6 +503,39 @@ function App() {
     setRole(null);
   };
 
+  const clearForms = () => {
+    setUserId("");
+    setPassword("");
+    setSignupUserId("");
+    setSignupPassword("");
+    setSignupConfirm("");
+
+    setForgotUserId("");
+    setForgotEmail("");
+    setForgotSuccessEmail("");
+
+    setAdminUserId("");
+    setAdminPassword("");
+    setAdminSecret("");
+    setAdminSignupId("");
+    setAdminSignupPassword("");
+    setAdminSignupConfirm("");
+
+    setForgotAdminUserId("");
+
+    setResetToken("");
+    setNewPassword("");
+    setConfirmNewPassword("");
+    setResetRole("user");
+
+    setShowPassword(false);
+    setShowAdminPassword(false);
+    setShowAdminSecret(false);
+    setShowSignupPassword(false);
+    setShowAdminSignupPassword(false);
+    setShowResetPassword(false);
+  };
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -942,7 +975,10 @@ function App() {
             }}
           >
             <div
-              onClick={() => setRole("user-login")}
+              onClick={() => {
+                clearForms();
+                setRole("user-login");
+              }}
               className="card-shadow role-card"
               style={{
                 width: "240px",
@@ -1012,7 +1048,10 @@ function App() {
               </div>
             </div>
             <div
-              onClick={() => setRole("admin-login")}
+              onClick={() => {
+                clearForms();
+                setRole("admin-login");
+              }}
               className="card-shadow role-card"
               style={{
                 width: "240px",
@@ -1111,7 +1150,10 @@ function App() {
             }}
           >
             <div
-              onClick={() => setRole(null)}
+              onClick={() => {
+                clearForms();
+                setRole(null);
+              }}
               style={{
                 fontSize: "14px",
                 color: "#9a8a7d",
@@ -1239,7 +1281,10 @@ function App() {
                 Forgot password?
               </span>
               <span
-                onClick={() => setRole("user-signup")}
+                onClick={() => {
+                  clearForms();
+                  setRole("user-signup");
+                }}
                 style={{
                   color: "#e85d2f",
                   cursor: "pointer",
@@ -1486,7 +1531,10 @@ function App() {
             </p>
 
             <button
-              onClick={() => setRole("user-login")}
+              onClick={() => {
+                clearForms();
+                setRole("user-login");
+              }}
               style={{
                 padding: "12px 32px",
                 background: "linear-gradient(135deg, #e85d2f 0%, #d94a1c 100%)",
@@ -1531,7 +1579,10 @@ function App() {
             }}
           >
             <div
-              onClick={() => setRole("user-login")}
+              onClick={() => {
+                clearForms();
+                setRole("user-login");
+              }}
               style={{
                 fontSize: "14px",
                 color: "#9a8a7d",
@@ -1642,7 +1693,10 @@ function App() {
             >
               Remembered your password?{" "}
               <span
-                onClick={() => setRole("user-login")}
+                onClick={() => {
+                  clearForms();
+                  setRole("user-login");
+                }}
                 style={{
                   color: "#e85d2f",
                   cursor: "pointer",
@@ -2695,7 +2749,10 @@ function App() {
             }}
           >
             <div
-              onClick={() => setRole(null)}
+              onClick={() => {
+                clearForms();
+                setRole(null);
+              }}
               style={{
                 fontSize: "14px",
                 color: "#9a8a7d",
