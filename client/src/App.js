@@ -480,7 +480,7 @@ function App() {
       setNewPassword("");
       setConfirmNewPassword("");
       window.history.replaceState({}, "", "/");
-      setRole(urlRole === "admin" ? "admin-login" : "user-login");
+      setRole(resetRole === "admin" ? "admin-login" : "user-login");
     } catch (err) {
       console.error(err);
       alert("Could not connect to server");
