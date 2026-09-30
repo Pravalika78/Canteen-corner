@@ -2901,7 +2901,10 @@ function App() {
                 Forgot password?
               </span>
               <span
-                onClick={() => setRole("admin-signup")}
+                onClick={() => {
+                  clearForms();
+                  setRole("admin-signup");
+                }}
                 style={{
                   color: "#2d1a11",
                   cursor: "pointer",
@@ -3119,7 +3122,10 @@ function App() {
             </p>
 
             <button
-              onClick={() => setRole("admin-login")}
+              onClick={() => {
+                clearForms();
+                setRole("admin-login");
+              }}
               style={{
                 padding: "12px 32px",
                 background: "linear-gradient(135deg, #3a3a3a 0%, #1a1a1a 100%)",
@@ -3164,7 +3170,10 @@ function App() {
             }}
           >
             <div
-              onClick={() => setRole("admin-login")}
+              onClick={() => {
+                clearForms();
+                setRole("admin-login");
+              }}
               style={{
                 fontSize: "14px",
                 color: "#9a8a7d",
@@ -3275,7 +3284,10 @@ function App() {
             >
               Remembered your password?{" "}
               <span
-                onClick={() => setRole("admin-login")}
+                onClick={() => {
+                  clearForms();
+                  setRole("admin-login");
+                }}
                 style={{
                   color: "#2d1a11",
                   cursor: "pointer",
