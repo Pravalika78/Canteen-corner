@@ -25,6 +25,18 @@ Built end-to-end with **React**, **Node.js/Express**, and **MongoDB Atlas**, wit
 
 ---
 
+## 🎬 Demo
+
+### 👤 User Flow
+
+https://github.com/user-attachments/assets/47a27a6f-cbfc-4ff2-9fed-849c4f93c356
+
+### 🔐 Admin Flow
+
+https://github.com/user-attachments/assets/b5a1381e-ae93-4883-b43b-f171b3ec0fed
+
+---
+
 ## ✨ Features
 
 <table>
